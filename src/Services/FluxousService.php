@@ -39,18 +39,27 @@ class FluxousService
     /**
      * FluxousService constructor.
      */
-    public function __construct($token = '')
+    public function __construct($clientId, $clientSecret, $token = null)
     {
         $this->http = Http::withoutVerifying()
             ->baseUrl(Config::get('fluxous.host') . Config::get('fluxous.api'))
             ->withHeaders([
                 'Cache-Control' => 'no-cache',
-            ])->withToken($token);
+            ]);
 
         $this->auth = new AuthEndpoint($this->http);
         $this->accounts = new AccountsEndpoint($this->http);
         $this->categories = new CategoriesEndpoint($this->http);
         $this->transactions = new TransactionsEndpoint($this->http);
+
+        if ($token === null) {
+            $token = $this->auth->token([
+                'client_id' => $clientId,
+                'client_secret' => $clientSecret,
+            ])->access_token;
+        }
+
+        $this->http->withToken($token);
     }
 
     /**

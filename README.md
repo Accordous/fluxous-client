@@ -46,7 +46,7 @@ get
 ```php
 use Accordous\FluxousClient\Services\FluxousService;
 
-$service = new FluxousService($token);
+$service = new FluxousService($clientId, $clientSecret);
 
 $response = $service->categories()->index();
 
@@ -57,7 +57,7 @@ post
 ```php
 use Accordous\FluxousClient\Services\FluxousService;
 
-$service = new FluxousService($token);
+$service = new FluxousService($clientId, $clientSecret);
 
 $attributes = [
     '' => '',
@@ -73,7 +73,7 @@ $result = $response->json();
 ```php
 use Accordous\FluxousClient\Services\FluxousService;
 
-$service = new FluxousService($token);
+$service = new FluxousService($clientId, $clientSecret);
 
 $attributes = [
     '' => '',
@@ -89,7 +89,7 @@ $result = $response->json();
 ```php
 use Accordous\FluxousClient\Services\FluxousService;
 
-$service = new FluxousService($token);
+$service = new FluxousService($clientId, $clientSecret);
 
 $attributes = [
     '' => '',
