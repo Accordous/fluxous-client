@@ -12,7 +12,7 @@
     "extra": {
         "laravel": {
             "providers": [
-              "FluxousClientServiceProvider"
+              "Accordous\\FluxousClient\\Providers\\FluxousClientServiceProvider"
             ],
             "aliases": {
               "FluxousClient" : "Accordous\\FluxousClient\\Facades\\FluxousClient"

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Http;
 
 class FluxousService
 {
+    private const TOKEN_TIME = 1296000;
+
     /**
      * @var \Illuminate\Http\Client\PendingRequest
      */
@@ -53,10 +55,9 @@ class FluxousService
         $this->transactions = new TransactionsEndpoint($this->http);
 
         if ($token === null) {
-            $token = $this->auth->token([
-                'client_id' => $clientId,
-                'client_secret' => $clientSecret,
-            ])->access_token;
+            $tokenKey = 'token_' . $clientId;
+
+            $token = cache()->remember($tokenKey, self::TOKEN_TIME, fn () => $this->getToken($clientId, $clientSecret));
         }
 
         $this->http->withToken($token);
@@ -92,5 +93,13 @@ class FluxousService
     public function transactions(): TransactionsEndpoint
     {
         return $this->transactions;
+    }
+
+    private function getToken($clientId, $clientSecret)
+    {
+        return $this->auth->token([
+            'client_id' => $clientId,
+            'client_secret' => $clientSecret,
+        ])->json('access_token');
     }
 }
